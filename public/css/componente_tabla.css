@@ -1,0 +1,127 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('./fonts/Roboto-Regular.ttf');
+}
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', 'finger';
+    font-size: 0.95rem;
+}
+
+.buscador_general{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6!important;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+.buscador_general .search_icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+.input_search_main{
+    width: 100%;
+    border-width: 0;
+    border-style: solid;
+}
+select.select_registros {
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    background-color: transparent;
+    border-width: 0;
+    border-style: solid;
+}
+.table_component_content{
+    min-width: 100%;
+}
+.table_component_content th, .table_component_content td {
+    border-color: rgba(229, 231, 235, 1);
+    border-width: 1px;
+    border-style: solid;    
+}
+.block_buttons_actions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.input_search_title{
+    width: 100%;
+    border: 1px solid #dee2e6!important;
+}
+.cont_table_level2{
+    background-color: aliceblue;
+}
+.table_component_content .button_delete_tabla{
+    color: #ed0e0e;
+}
+.table_component_content .button_delete_tabla:hover{
+    color:#e17c7c;
+}
+.table_component_content i.far.fa-times-circle, .table_component_content i.fas.fa-plus-circle {    
+    font-size: 1.2rem;    
+}
+.table_component_content a.createbtn{
+    color: #048f44;
+}
+.table_component_content a.createbtn:hover{
+    color:#5eae84;
+}
+.order_button{
+    border-width: 0;
+    border-style: solid;
+    width: 2.5rem;
+    border-radius: 15px;
+}
+.footer_paginator {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.input_current_page{
+    border-width: 0;
+    border-style: solid;
+    background-color: aliceblue;
+}
+
+.container_search_fechas {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.grids_search_fechas {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.grids_search_fechas label {
+    margin-bottom: 0px;
+    color: #5f8387!important;
+    font-weight: 600;
+}
+.grids_search_fechas input {
+    border: 2px solid #8ec3be;
+}
+button#filtrarPorFecha {
+    background-color: #049145;
+    border: 1px solid #37b14a;
+}
+button#filtrarPorFecha:hover {
+    background-color: #3ab34a;    
+}
+button#limpiarFiltros {
+    background-color: #00a79a;
+    border: 1px solid #86aeb3;
+}
+button#limpiarFiltros:hover {
+    background-color: #86aeb3;    
+}
+@media screen and (min-width: 1321px){
+
+}

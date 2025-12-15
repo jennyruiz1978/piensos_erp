@@ -1,0 +1,80 @@
+{
+    "Admin": {
+        "Dashboard" : {
+            "tipo":"bloque", 
+            "nombre":"Dashboard", 
+            "menus" :{
+                "Métricas":{"nombre":"Dashboard", "ruta":"/Inicio"},
+                "ReportesCli":{"nombre":"Fac. Clientes", "ruta":"/Inicio/reportesFacturacionClientes"},
+                "ReportesProv":{"nombre":"Fac. Proveedores", "ruta":"/Inicio/reportesFacturacionProveedores"}
+            },
+            "metodo":"",
+            "icono":"fas fa-chart-bar"
+        },
+        "Planificacion" : {
+                    "tipo":"bloque", 
+                    "nombre":"Planificació", 
+                    "menus" :{
+                        "Planificacion":{"nombre":"Planificació", "ruta":"/Planificaciones"}
+                    },
+                    "metodo":"",                    
+                    "icono":"fas fa-calendar-alt"
+        },
+        "Compras" : {
+                    "tipo":"bloque", 
+                    "nombre":"Compres", 
+                    "menus" :{
+                        "Proveedores":{"nombre":"Proveïdors", "ruta":"/Proveedores"},
+                        "Albaranes":{"nombre":"Albarans", "ruta":"/AlbaranesProveedores"},
+                        "Facturas":{"nombre":"Factures", "ruta":"/FacturasProveedores"},
+                        "FacturaMasiva":{"nombre":"Factura massiva", "ruta":"/FacturasProveedores/facturacionMasiva"},
+                        "Recibos":{"nombre":"Rebuts", "ruta":"/RecibosProveedores"}                      
+                    },
+                "metodo":"",
+                "icono":"fas fa-people-carry"
+        },        
+        "Ventas" : {
+                    "tipo":"bloque", 
+                    "nombre":"Vendes", 
+                    "menus" :{
+                        "Clientes":{"nombre":"Clients", "ruta":"/Clientes"},
+                        "Albaranes":{"nombre":"Albarans", "ruta":"/AlbaranesClientes"},
+                        "Facturas":{"nombre":"Factures", "ruta":"/FacturasClientes"},
+                        "FacturaMasiva":{"nombre":"Factura massiva", "ruta":"/FacturasClientes/facturacionMasiva"},
+                        "Recibos":{"nombre":"Rebuts", "ruta":"/RecibosClientes"},
+                        "Zonas":{"nombre":"Zonas", "ruta":"/Zonas"}
+                    },
+                    "metodo":"",
+                    "icono":"fas fa-cash-register"
+        },
+        "Productos" : {
+                        "tipo":"bloque", 
+                        "nombre":"Productes", 
+                        "menus" :{                            
+                            "ProductosCompra":{"nombre":"De compra", "ruta":"/ProductosCompra"},
+                            "ProductosVenta":{"nombre":"De venta", "ruta":"/ProductosVenta"}
+                        },
+                        "metodo":"",
+                        "icono":"fas fa-box-open"
+        },        
+        "Usuarios" : {
+                        "tipo":"bloque", 
+                        "nombre":"Usuaris", 
+                        "menus" :{"Listado":{"nombre":"Usuaris", "ruta":"/Usuarios"}},
+                        "metodo":"",
+                        "icono":"fas fa-user-tie"
+        },
+        "Configuracion" : {
+                            "tipo":"bloque", 
+                            "nombre":"Configuració",
+                            "menus" :{            
+                                "Configuracion":{"nombre":"Configuració", "ruta":"/Configuracion"},                                                   
+                                "FormasPago":{"nombre":"Cobraments / Pagaments", "ruta":"/FormasPago"},
+                                "Cuentasbancarias":{"nombre":"Comptes bancaris", "ruta":"/CuentasBancarias"}
+                            },
+                            "metodo":"",
+                            "icono":"fas fa-cogs"}
+    }
+}
+
+

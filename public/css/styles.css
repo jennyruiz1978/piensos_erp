@@ -1,0 +1,1060 @@
+
+.productos_category {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 30px;
+    background-color:aliceblue;
+}
+button.button_submit, a.button_submit {    
+    border-radius: 4px;
+    border: none;
+    padding: 8px;
+    background-color: #00BCD4;
+    color: #fff;
+    margin-right: 5px;
+    text-align: center;
+}
+button.button_submit_small, a.button_submit_small {    
+    border-radius: 4px;
+    border: none;
+    padding: 5px;
+    background-color: #00BCD4;
+    color: #fff;
+    margin-right: 5px;
+    text-align: center;
+}
+.btn_submit_producto{
+    width: 30%;
+}
+button.button_submit:hover, a.button_submit:hover, button.button_submit_small:hover, a.button_submit_small:hover {    
+    background-color: #52becd;
+    color: #fff;
+}
+
+.cont_button_product {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+.cont_button_product_left {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+
+.block_iva {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.cont_field_prod {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.producto_compra, .producto_venta  {
+    padding: 20px;
+    border: 1px solid #c2d3d5;
+    border-radius: 3px;
+}
+.productos_grilla{
+    width: 100%;
+}
+
+a.button_update{    
+    border-radius: 4px;
+    border: none;
+    padding: 8px;
+    background-color: #939d9e;
+    color: #fff;
+    margin-right: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+a.button_update:hover {    
+    background-color: #b0c1c3;    
+}
+a.btn_form_crear, button.btn_form_crear{
+    width: 25%;
+}
+@media screen and (min-width:1024px){
+    a.btn_form_crear, button.btn_form_crear{
+        width: 15%;
+    }
+}
+.button_delete{
+    border-radius: 4px;
+    border: none;
+    padding: 8px;
+    background-color: #d21e1e;
+    color: #fff!important;
+    margin-right: 5px;
+    text-align: center;
+}
+.button_delete{ 
+    background-color: #e74343;
+}
+.text_pargraph_flex{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    text-align: justify;
+}
+.container_form_crear_planning {
+    padding: 20px;
+    border: 1px solid #c2d3d5;
+    border-radius: 3px;
+    width: 100%;
+}
+.container_fechas{
+    align-items: center;
+}
+.btn_calcular_fechas {
+    margin-top: 1.8rem;
+}
+a.button_add {
+    border-radius: 4px;
+    border: none;
+    padding: 8px;
+    background-color: #049145;
+    color: #fff;
+    margin-right: 5px;
+    text-align: center;
+    text-wrap: nowrap;
+}
+a.button_add:hover {
+    background-color:#3ab34a;
+    color: #fff;
+}
+
+#tabla_planificacion thead {
+        font-weight: 600;
+        text-align: center;
+        background-color: #1f7883;
+        color: #f0f2f3;
+}    
+#tabla_planificacion tbody {
+    background-color: #fff;
+}
+.celda_planif {
+    display: flex;    
+    gap: 5px;
+    flex-direction: column;
+    width: 190px;
+}
+.fila_cantidad_unidad {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.fila_cliente {
+    display: flex;
+    flex-direction: column;
+}
+.fila_transportista {
+    display: flex;
+    flex-direction: column;
+}
+input.input_planif {
+    /*border: none;
+    background: transparent;
+    border-radius: 5px;*/
+    padding: 3px;
+    width: 90%;
+}
+#tabla_planificacion a{    
+    cursor: pointer;
+    color: #007bff;    
+}
+#tabla_planificacion a.btn_guardar_carga {
+    cursor: pointer;
+    color: white;    
+    border-radius: 3px;
+    text-align: center;
+    background-color: #00BCD4;
+    width: 45%;    
+}
+#tabla_planificacion a.btn_guardar_carga:hover{     
+    color: white;    
+    background-color: #52becd;
+    text-decoration:underline;
+}
+#tabla_planificacion a.btn_eliminar_carga {
+    cursor: pointer;
+    color: white !important;
+    border-radius: 3px;
+    text-align: center;
+    background-color: #d30303;    
+    font-size: 0.85rem;
+    width: 45%;
+}
+#tabla_planificacion a.btn_eliminar_carga:hover{     
+    color: white;    
+    background-color: #e96767;
+    text-decoration:underline;
+}
+.total_box {
+    border: 2px solid green;
+    padding: 12px;
+    border-radius: 3px;
+    font-weight: 700;
+}
+form#formulario_crear_planificacion div.row {
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
+i.icon_btn_input {
+    padding: 5px;
+}
+.input_precio_plan {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.input_price_no_border {
+    border: none;
+}
+.msgErrores {
+    color: red;    
+    font-size: 0.85rem;
+    margin-top: 15px;    
+}
+.form-label.label_input_nb{
+    margin-top: 10px;
+}
+
+/*TABLES GRILLA*/
+.shortWidthField2{
+    min-width: 60px;
+    width: 100%;
+}
+.shortWidthField{
+    min-width: 76px;
+    width: 100%;
+}
+.mediumWidthField{
+    min-width: 100px;
+    width: 100%;
+}
+.largeWidthField{
+    min-width: 290px;
+    width: 100%;
+}
+.inputGrillaAuto, .inputGrillaDescripcion {
+    height: 30px;
+    border: none;
+    padding: 3px;
+}
+.inputGrillaDescripcion {
+    height: 100%;
+}
+table#tablaGrilla td, table#tablaGrilla th {
+    padding: 7px!important;
+}
+.label_form_grilla{
+    font-weight: 600;
+}
+.row.container_products {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.container_totales {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.cont_table_totales {
+    width: 45%;
+}
+
+@media screen and (min-width:960px){
+    .cont_table_totales {
+        width: 45%;
+    } 
+}
+
+td.cell_total {
+    text-align: end;
+}
+
+td.cell_total_amount {
+    font-size: 1rem;
+    color: darkmagenta;
+    font-weight: 600;
+    text-align: end;
+}
+a.button_small_bar {    
+    border-radius: 4px;
+    border: none;
+    padding: 5px;
+    background-color: #d21e1e;
+    color: #fff!important;
+    margin-right: 5px;    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    cursor: pointer;
+}
+a.button_small_bar:hover {     
+    background-color: #ca6666;
+}
+a.button_small_pdf {    
+    border-radius: 4px;
+    border: none;
+    padding: 5px;
+    background-color: #00a79a;
+    color: #fff!important;
+    margin-right: 5px;    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+}
+a.button_small_pdf:hover {     
+    background-color: #69bcb5;
+}
+a.button_small_pdf_modal {    
+    border-radius: 4px;
+    border: none;
+    padding: 8px;
+    background-color: #00a79a;
+    color: #fff!important;
+    margin-right: 5px;    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;    
+}
+.button_small_pdf_modal svg.svg-inline--fa.fa-file-pdf.fa-w-12{
+    font-size: 1.15rem;
+}
+a.colorverde{
+    background-color: #049145;
+}
+a.colorverde:hover{
+    background-color: #3ab34a;
+}
+.button_small_bar i.fas.fa-file-invoice-dollar {
+    font-size: 1.2rem;
+}
+.button_small_bar span {
+    font-size: 0.88rem;
+}
+.productos_fact_modal{
+    padding-left: 0;
+    padding-right: 0;
+}
+.cont_dias_pago{
+    display: flex!important;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+}
+a#ver_albaranes_factura {
+    width: 25px;
+}
+
+a.button_small_invoice {
+    border-radius: 4px;
+    border: none;
+    padding: 5px;    
+    color: #fff!important;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+}
+a.button_small_invoice.ver {   
+    background-color: #3ab348;    
+}
+a.button_small_invoice.agregar {   
+    background-color: #00bcd4;    
+}
+
+.row_title {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+svg.button_small_delete_row{
+    font-size: 25px;
+}
+
+a.button_small_delete_row {
+    border-radius: 4px;
+    border: none;
+    padding: 5px;        
+    color: #e74343!important;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    width: 25px;
+}
+.button_small_add_row{
+    border-radius: 4px;
+    border: none;
+    padding: 3px;        
+    color: #fff!important;
+    background-color: #cd0505ed;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;    
+}
+.button_small_add_row:hover{
+    background-color: red;
+}
+.cont_button_search {
+    display: flex;
+    align-items: flex-end;
+}
+
+.cont_crear_factura_masiva {
+    border: 1px solid #00bcd4;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+table#tablaGrillaAlbaranesFactura th, table#tablaGrillaAlbaranesFactura td {
+    padding: 5px!important;
+}
+
+.fila_dias_cobro {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+div#tabla_perfilFormador {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.contInputDias {
+    width: 55px;
+    display: flex;
+    flex-direction: row;    
+}
+
+input.inputSinBorde {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+}
+a.btn_guardar_carga {
+    font-size: 0.85rem;
+}
+
+a#btn_actualizar_precio {
+    font-size: 0.85rem;
+    margin-right: 5px;
+}
+
+.button_small_click_receipt{
+    border-radius: 4px;
+    border: none;
+    padding: 3px;        
+    color: #fff!important;
+    background-color: #00bcd4;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;    
+}
+.button_small_click_receipt:hover{
+    background-color: #00a79a;
+}
+.mensaje_required{
+    color: red;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.cont_prod_del {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+span.eliminar_fila {
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #d21e1e;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 3px;
+}
+.cont_botones_externo{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+a.exportarExcel, button.exportarExcel, a.exportarExcel_test{
+    background-color: green;
+    border: 1px solid green;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    text-wrap: nowrap;
+}
+a.exportarExcel:hover, button.exportarExcel:hover, a.exportarExcel_test:hover{
+    background-color: #049145;
+    border: 1px solid #049145;
+}
+
+/*Dashboard styles */
+.container_flex_dashboard {
+    padding: 0.25rem;  
+} 
+@media screen and (min-width:1024px){
+    .container_flex_dashboard {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;    
+    }
+}
+
+
+.container_search_fechas_dashboard {    
+        display: grid;
+        grid-template-columns: auto auto;    
+        gap: 20px;
+        flex-wrap: wrap;
+}
+@media screen and (min-width:1024px){
+    .container_search_fechas_dashboard {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+}
+
+.grids_search_fechas_dash {      
+    display: flex;
+    gap: 10px;  
+    flex-direction: column;
+    align-items: flex-start;
+}
+@media screen and (min-width:1024px){
+    .grids_search_fechas_dash {       
+        align-items: center;
+        flex-direction: row;
+    }
+}
+
+.grids_search_fechas_dash label {
+    margin-bottom: 0px;
+    color: #5f8387;
+    font-weight: 600;
+}
+.grids_search_fechas_dash input {
+    border: 2px solid #8ec3be;
+}
+.grids_search_fechas_dash.button {
+    margin-top: auto;
+}
+
+.container_cli_pro {
+    background-color: white;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.container_flex_pills {        
+    grid-template-columns: 1fr;
+}
+@media screen and (min-width:1024px){
+    .container_flex_pills {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+.container_pills, .container_pills_tres {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 15px;
+}
+@media screen and (min-width:900px){
+    .container_pills_tres {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .container_pills {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+@media screen and (min-width:1024px){
+    .container_pills_tres {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }  
+}
+
+h3.content-pill {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*
+.border-b-4 {    
+    border-bottom: 8px solid rgba(5, 150, 105, 1);
+}
+*/
+.rounded-lg {
+    border-radius: 0.8rem!important;
+}
+.rounded-button{
+    border-radius: 4px;
+}
+.pill_only{
+    padding: 10px;
+    width: 60%;
+    color: #58717c;
+    box-shadow: 0px 0px 20px rgb(166, 170, 170);
+}
+
+.pill_only.albaranados{
+    background-color: #1ddcf4; 
+}
+.border-b-4.albaranados {    
+    border-bottom: 8px solid #08707d;
+}
+.pill_only.facturados {
+    background-color: #f4bd0f;
+}
+.border-b-4.facturados {    
+    border-bottom: 8px solid #de8603;
+}
+.pill_only.iva {
+    background-color: #c7f8e0;
+}
+.border-b-4.iva {    
+    border-bottom: 8px solid #29c679;
+}
+.pill_only.pagadas {
+    background-color: #a8ed77;
+}
+.border-b-4.pagadas {    
+    border-bottom: 8px solid #408b0c;
+}
+.pill_only.pagadasparc {
+    background-color: #b7eaee;
+}
+.border-b-4.pagadasparc {    
+    border-bottom: 8px solid #2ea1a9;
+}
+.pill_only.pendientes {
+    background-color: #f6f76d;
+}
+.border-b-4.pendientes {    
+    border-bottom: 8px solid #cccd07;
+}
+.pill_only.vencidas {
+    background-color: #fedada;
+}
+.border-b-4.vencidas {    
+    border-bottom: 8px solid #dc1919;
+}
+.pill_only.sinfacturar {
+    background-color: #e5f1f2;
+}
+.border-b-4.sinfacturar {    
+    border-bottom: 8px solid #879496;
+}
+.pill_only h5 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+a#buscarfechasDashboard {
+    background-color: #049145;
+    border: 1px solid #37b14a;
+}
+a#buscarfechasDashboard:hover {
+    background-color: #3ab34a;    
+}
+#submit_rectificativa{
+    color: #fff;
+    background-color: #b51010;
+}
+#submit_rectificativa:hover{
+    background-color: #f25b5b;
+}
+input.no_edit{
+    background-color: #f0f8ff;
+}
+span.signo_negativo {
+    font-size: 20px;
+    color: red;
+}
+.cont_negativo {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+.contenedor_enlaces_dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn_list_dw{
+    background-color: gray;
+    border-radius: 10px!important;
+}
+.btn_list_dw.active{
+    background-color: #3e3636; 
+}
+a#enviar_factura_proveedor {
+    background-color: #799699;
+    border-radius: 4px;
+    border: none;
+    padding: 5px;    
+    color: #fff!important;
+    margin-right: 5px;
+    /*padding: 8px;*/
+    display: flex;
+    align-items: center;
+    justify-content: space-around;    
+    cursor: pointer;
+}
+a#enviar_factura_proveedor svg.svg-inline--fa.fa-envelope.fa-w-16{
+    font-size: 1.15rem;
+}
+#recibo_no_pagado{
+    background-color: #3559c5;
+}
+a#enviar_factura_proveedor:hover {
+    background-color: #a0acae;
+}
+#recibo_no_pagado:hover {
+    background-color: #8395cc;
+}
+a.signo_mas {
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: gray;
+    border-radius: 3px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.container_input_email {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+div#tablaEmailsEnvioPresupuesto {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.contieneInput{
+    display: flex;
+    gap: 3px;
+}
+
+a.button_dashboard {
+    border-radius: 4px;
+    border: none;    
+    background-color: #d94338;
+    color: #fff!important;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 18px;
+    cursor: pointer;
+    width: 100%;
+    min-width: 80px;
+    max-width: 140px;
+}
+
+.container_configuracion {
+    padding: 20px;
+    border: 1px solid #c2d3d5;
+    border-radius: 3px;
+    background-color: aliceblue;
+    width: 100%;
+}
+.productos_category_config {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+    background-color: #eaedee;
+}
+@media screen and (min-width:900px){
+    .productos_category_config {        
+        flex-direction: row;
+        
+    }
+}
+
+form#formulario_editar_recibo input.impagado {
+    background-color: #f6c6c6;
+}
+form#formulario_editar_recibo input.pendiente {
+    background-color: #fdf8c5;
+}
+form#formulario_editar_recibo input.pagado {
+    background-color: #adfcb0;
+}
+
+#body_tabla_planificacion td:hover{
+    background-color: lightblue;    
+}
+
+#tabla_planificacion td{    
+    border: 3px solid #00BCD4;
+}
+
+td.celdaEliminarPlan {
+    vertical-align: middle;
+}
+td.celdaEliminarPlan:hover {
+    background-color: #eb9090!important;
+}
+p.zona_plan {
+    font-size: 0.85rem;
+    color: #3723c6;
+    margin-bottom: 0.3rem;
+}
+a.btn_albaran_cliente {
+    cursor: pointer;
+    color: red; 
+    border-radius: 3px;
+    text-align: center;
+    background-color: #fa6e6e;
+    font-size: 0.85rem;
+    color: white!important;
+}
+.btnes_celda {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+a.btn_ver_albaran_cliente{
+    cursor: pointer;
+    color: red; 
+    border-radius: 3px;
+    text-align: center;
+    background-color: #a98181;
+    font-size: 0.85rem;
+    color: white!important;
+}
+a.btn_ver_albaran_prov{
+    cursor: pointer;
+    color: red; 
+    border-radius: 3px;
+    text-align: center;
+    background-color: #91b0b4;
+    font-size: 0.85rem;
+    color: white!important;
+}
+
+a.btn_ver_albaran_fab{
+    cursor: pointer;    
+    border-radius: 3px;
+    text-align: center;
+    background-color: #3cada2;
+    font-size: 0.85rem;
+    color: white!important;
+}
+
+/*@media screen and (min-width:900px){
+    form#formulario_crear_planificacion {
+        max-width: 90vw;
+    }
+}*/
+
+
+
+.planificacion_main {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 30px;
+    background-color: aliceblue;
+    max-width: 97vw;    
+}
+
+@media screen and (min-width:900px){
+    .planificacion_main {
+        max-width: 80vw;
+    }
+}
+
+.fa-times-circle.texto-rojo-del {
+    color: #da0d0d;
+}
+
+
+
+.spinnerShow {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.texto-diferencias {
+    color: red;
+    text-align: justify;
+    
+}
+
+div#diferencias .datos_diferencias.p {
+    font-size: 0.85rem;
+}
+div#diferencias p.texto_producto {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+a.button_descartar {
+    border-radius: 4px;
+    border: none;
+    padding: 8px;
+    background-color: #e74343;
+    color: #fff;
+    margin-right: 5px;
+    text-align: center;
+}
+a.button_descartar:hover {
+    color: #fff;
+    background-color: #e17b7b;
+}
+.container_formacobro {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.container_formacobro label {
+    width: 50%;
+    margin-bottom: 0px;
+}
+
+div#container_venc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fila_retencion_input {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.fila_retencion_input input {
+    width: 40%;
+    border: none;
+    background-color: #d4f1f1;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+table#tablaGrillaAlbaranesFacturaBuscar td {
+    padding: 2px;
+}
+
+table#tablaGrillaFacturaSeleccionados td {
+    padding: 2px;
+}
+
+a.button_small_bar_sent {    
+    border-radius: 4px;
+    border: none;
+    padding: 5px;
+    background-color: #197d47;
+    color: #fff!important;
+    margin-right: 5px;    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    cursor: pointer;
+}
+a.button_small_bar_sent:hover {     
+    background-color: #1a633c;
+}
+
+.container_emails {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+}
+.fila_email {
+    border: 1px solid green;
+    border-radius: 5px;
+    padding: 5px;
+}
+.field_text {
+    font-size: 0.81rem;
+}
+span.etiqueta_email {
+    font-weight: 600;
+    font-size: 0.81rem;
+}
+.cont_button_product span {
+    font-size: 0.8rem;
+}
+
+.contenedor_botones {
+    display: inline-flex;
+    justify-content: space-between;
+}

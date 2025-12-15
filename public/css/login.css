@@ -1,0 +1,152 @@
+@font-face {
+    font-family: 'finger';
+    src: url('./fonts/finger.ttf');
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('./fonts/poppins-regular.ttf');
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('./fonts/Roboto-Regular.ttf');
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', 'finger';
+    font-size: 0.95rem;
+}
+body{
+    background-color:#eaedee;    
+    line-height: 1.2;
+}
+h3{
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+.main_container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+.card_login {
+    display: flex; 
+    flex-direction: column;
+    background-color: #eef3f4;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.img_logo img{
+    width: 100%;
+}
+.card_login_box{
+    margin: 16px;
+}
+.login_logo {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login_inputs {
+    background-color: #eef3f4;
+}
+button.button_login_submit {
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    padding: 8px;
+    background-color: #00BCD4;
+    color: #fff;
+}
+button.button_login_secondary, a.button_login_secondary {
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    padding: 8px;
+    background-color: gray;
+    color: #fff;
+    text-decoration: none;
+}
+form#form_login, form#form_forgot_pass {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.card_login_pass, .card_login_email {
+    display: flex;
+    flex-direction: column;
+}
+.card_login_buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+.eye_icon_login {
+    width: 100%;
+    position: relative;  
+}
+.eye_icon_check {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+svg.svg-inline--fa.fa-eye {
+    width: 1.125em;
+    color: #00BCD4;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    display: inline-block;
+    vertical-align: -0.125em;
+}
+i.far.fa-eye-slash.login_view {
+    color: #00BCD4;
+}
+i.far.fa-eye.login_view {
+    color: #00BCD4;
+}
+label.js-pass-label {
+    background-color: #d1d5db;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 0;
+}
+input#toggles {
+    display: none;
+}
+input#password, input#email {
+    border-width: 1px;
+    border-radius: 0.25rem;
+    appearance: none;
+    width: 100%;
+    line-height: inherit;
+    border-style: solid;
+    border-color: #00BCD4;
+}
+a.link_forgot_pass {
+    color: #00BCD4;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+div#msgErrores {
+    color: red;    
+    font-size: 0.85rem;
+    margin-top: 15px;
+    text-align: justify;
+}
+@media screen and (min-width: 1321px){
+    .card_login {
+        flex-direction: row;
+    }
+    .login_inputs {     
+        min-width: 250px;
+    }
+}
