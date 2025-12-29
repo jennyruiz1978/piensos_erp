@@ -855,4 +855,133 @@ class TemplateHelper {
         }
     }
 
+    public static function buildGridFacturasCSV($rowsObject){
+
+        
+        $html = '';
+        if($rowsObject && count($rowsObject) > 0){           
+            foreach ($rowsObject as $key) {
+                
+                $html.='
+
+                    <tr class="thead-light" id="fila_alb_fact_ver_'.$key->id.'">              
+                        
+                        <td style="display:none;">'.$key->id.'</td>
+
+                        <td>'.$key->numero.'</td>
+                        
+                        <td>'.date("d/m/Y",strtotime($key->fecha)).'</td>
+                                                
+                        <td>'.number_format($key->baseimponible, 2, ",", ".").'</td>
+
+                        <td>'.number_format($key->ivatotal, 2, ",", ".").'</td>
+
+                        <td>'.number_format($key->total, 2, ",", ".").'</td>    
+                        
+                        <td>
+                            <div class="d-flex" style="justify-content: center;">
+
+                                <a class="button_small_add_row eliminar_alb_fact" data-idalbaran="'.$key->id.'" style="cursor:pointer;" >Eliminar</a>
+
+                            </div> 
+                        </td>    
+
+            
+                    </tr>';
+
+            }
+        } else{
+            $html .= 'No hi ha resultats per a la cerca';    
+        }               
+        return $html;                
+    } 
+
+    /*public static function buildGridFacturasCSV($facturas)
+    {
+        $html = '';
+
+        foreach ($facturas as $f) {
+            $html .= "
+                <tr>
+                    <td>{$f->numero}</td>
+                    <td>{$f->fecha}</td>
+                    <td>1</td>
+                    <td>-</td>
+                    <td>{$f->total}</td>
+                    <td>{$f->estado}</td>
+                    <td>{$f->vencimiento}</td>
+                    <td>
+                        <a class='button_small_add_row agregar_alb_fact' data-idfactura='{$f->id}'>Afegir</a>
+                    </td>
+                </tr>
+            ";
+        }
+        return $html;
+    } */
+
+    public static function buildGridInvoicesSearchModified($rowsObject){
+        $html = '';
+        if($rowsObject && count($rowsObject) > 0){           
+            foreach ($rowsObject as $key) {
+                
+                // Lógica para determinar el estilo del botón según el estado
+                if($key->estado_exportar == 'exportada'){
+                    $claseBoton = 'button_small_add_row_green'; // Clase nueva para verde
+                    $textoBoton = 'Repetir';
+                } else {
+                    $claseBoton = 'button_small_add_row'; // Clase original (azul/estándar)
+                    $textoBoton = 'Afegir';
+                }
+
+                $html.='
+                    <tr class="thead-light" id="fila_alb_'.$key->id.'">              
+                        <td style="display:none;">'.$key->id.'</td>
+                        <td>'.$key->numero.'</td>
+                        <td>'.date("d/m/Y",strtotime($key->fecha)).'</td>
+                        <td>'.number_format($key->total, 2, ",", ".").'</td>  
+                        <td>'.($key->estado).'</td>  
+                        <td>'.(!empty($key->vencimiento) ? date("d/m/Y", strtotime($key->vencimiento)) : '').'</td> 
+                        <td>
+                            <div class="d-flex" style="justify-content: center;">
+                                <a class="'.$claseBoton.' agregar_alb_fact" data-idfactura="'.$key->id.'">
+                                    '.$textoBoton.'
+                                </a>
+                            </div> 
+                        </td>    
+                    </tr>';
+            }
+        } else {
+            $html .= 'No hi ha resultats per a la cerca';    
+        }       
+        return $html;                
+    }
+
+    public static function getFilaFacturaSeleccionada($factura) {
+    // ID para la fila en la tabla de la derecha
+        $html = '<tr id="fila_alb_inv_' . $factura->id . '" class="fila_alb_inv" data-idfactura="' . $factura->id . '">';
+        
+        // Input oculto para el envío del formulario
+        $html .= '<td style="display:none;">
+                    <input type="hidden" name="idfacturaSelected[]" value="' . $factura->id . '">
+                </td>';
+                
+        $html .= '<td class="text-left">' . $factura->numero . '</td>';
+        $html .= '<td>' . date("d/m/Y", strtotime($factura->fecha)) . '</td>';
+        $html .= '<td>1</td>'; 
+        $html .= '<td>' . number_format($factura->total, 2, ',', '.') . ' €</td>';
+        $html .= '<td>' . number_format($factura->total, 2, ',', '.') . ' €</td>';
+        
+        // Botón para eliminar de la lista de la derecha
+        $html .= '<td class="text-center">
+                    <a class="eliminar_alb_fact" data-idfactura="' . $factura->id . '" style="cursor:pointer;">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                </td>';
+                
+        $html .= '</tr>';
+        
+        return $html;
+    }
+
+
 }

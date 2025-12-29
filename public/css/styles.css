@@ -421,6 +421,22 @@ a.button_small_delete_row {
 .button_small_add_row:hover{
     background-color: red;
 }
+
+.button_small_add_row_green {
+    background-color: #28a745; /* Verde éxito */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+.button_small_add_row_green:hover {
+    background-color: #218838;
+    color: white;
+}
+
 .cont_button_search {
     display: flex;
     align-items: flex-end;

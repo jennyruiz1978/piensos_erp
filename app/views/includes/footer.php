@@ -27,8 +27,8 @@
         <script type="module" src="<?php echo RUTA_URL ?>/public/js/inicio.js?v=<?php echo(rand()); ?>"></script>     
         <script type="module" src="<?php echo RUTA_URL ?>/public/js/config.js?v=<?php echo(rand()); ?>"></script>     
         <script type="module" src="<?php echo RUTA_URL ?>/public/js/cuentasBancarias.js?v=<?php echo(rand()); ?>"></script>
-        
-        
+        <script type="module" src="<?php echo RUTA_URL ?>/public/js/facturasCliCSV.js?v=<?php echo(rand()); ?>"></script> 
+
         
     </body>
 
