@@ -43,7 +43,7 @@
                         "FacturaMasiva":{"nombre":"Factura massiva", "ruta":"/FacturasClientes/facturacionMasiva"},
                         "Recibos":{"nombre":"Rebuts", "ruta":"/RecibosClientes"},
                         "Zonas":{"nombre":"Zonas", "ruta":"/Zonas"},
-                        "Ficheros CSV":{"nombre":"Fitxers", "ruta":"/FacturasFicherosCSV"}
+                        "Ficheros CSV":{"nombre":"Exportar CSV", "ruta":"/FacturasFicherosCSV"}
                     },
                     "metodo":"",
                     "icono":"fas fa-cash-register"

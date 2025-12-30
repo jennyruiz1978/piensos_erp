@@ -7,7 +7,7 @@
             <main class="w-full flex-grow p-6">                                             
                <div class="container mx-auto px-1 xl:px-2">
                   
-                  <h2 class="text-2xl font-semibold leading-tight flex-1 mr-2 p-2 mt-4">Fitxers de clients CSV </h2>                
+                  <h2 class="text-2xl font-semibold leading-tight flex-1 mr-2 p-2 mt-4">Exportar fitxers CSV de factures clients </h2>                
                     
                   <div class="container_fact_masiva">
 
