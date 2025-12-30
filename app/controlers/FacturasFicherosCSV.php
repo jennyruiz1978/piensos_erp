@@ -260,7 +260,7 @@ class FacturasFicherosCSV extends Controlador {
             number_format($linea->cantidad, 2, ',', ''),               // D: CANTIDAD
             $linea->unidad,                 // E: UNIDAD
             number_format($linea->precio, 2, ',', ''),                 // F: PRECIO
-            "",                             // G: % DTO (Vacío según instrucción)
+            number_format($linea->descuentotipo, 2, ',', ''), // G: % DTO (Vacío según instrucción)
             number_format($linea->descuentolinea, 2, ',', ''),       // H: DESCUENTO (De la factura)
             number_format($linea->ivatipo, 2, ',', ''),               // I: % IMPUESTO (De la factura)
             number_format($linea->subtotal, 2, ',', ''),          // J: BASE IMPONIBLE (De la factura)
