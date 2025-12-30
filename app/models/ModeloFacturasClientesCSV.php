@@ -93,9 +93,9 @@ class ModeloFacturasClientesCSV{
         $this->db->query("
             SELECT 
                 det.*,
-				det.descuentotipo * det.subtotal / 100 AS descuentolinea,
-				(det.subtotal * (det.ivatipo)/100) AS ivaimporte,
-				(det.subtotal * (100 + det.ivatipo)/100) - ( det.descuentotipo * det.subtotal / 100 ) AS importetotal,
+                ROUND(det.descuentotipo * det.subtotal / 100,2) AS descuentolinea,
+                ROUND( (det.subtotal - (det.descuentotipo * det.subtotal / 100)) * det.ivatipo / 100 ,2) AS ivaimporte,
+                ROUND((det.subtotal - ROUND(det.descuentotipo * det.subtotal / 100,2)) * (100 + det.ivatipo)/100,2) AS importetotal,			
                 fac.fecha , fac.vencimiento
             FROM clientes_facturas_det det
             INNER JOIN clientes_facturas fac ON det.idfactura = fac.id
