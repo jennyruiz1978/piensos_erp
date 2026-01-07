@@ -957,26 +957,34 @@ class TemplateHelper {
     }
 
     public static function getFilaFacturaSeleccionada($factura) {
-    // ID para la fila en la tabla de la derecha
+        // ID para la fila en la tabla de la derecha
         $html = '<tr id="fila_alb_inv_' . $factura->id . '" class="fila_alb_inv" data-idfactura="' . $factura->id . '">';
         
-        // Input oculto para el envío del formulario
+        // 1. ID Factura (Oculto)
         $html .= '<td style="display:none;">
                     <input type="hidden" name="idfacturaSelected[]" value="' . $factura->id . '">
                 </td>';
                 
+        // 2. Nº Factura
         $html .= '<td class="text-left">' . $factura->numero . '</td>';
+        // 3. Data
         $html .= '<td>' . date("d/m/Y", strtotime($factura->fecha)) . '</td>';
+        // 4. Quant.
         $html .= '<td>1</td>'; 
+        // 5. Unit.
         $html .= '<td>' . number_format($factura->total, 2, ',', '.') . ' €</td>';
+        // 6. Total
         $html .= '<td>' . number_format($factura->total, 2, ',', '.') . ' €</td>';
         
-        // Botón para eliminar de la lista de la derecha
+        // 7. Accions (Botón eliminar)
         $html .= '<td class="text-center">
                     <a class="eliminar_alb_fact" data-idfactura="' . $factura->id . '" style="cursor:pointer;">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </a>
                 </td>';
+                
+        // 8. Nº Exportacions 
+        $html .= '<td class="text-center"><strong>' . ($factura->num_exportaciones ?? 0) . '</strong></td>';
                 
         $html .= '</tr>';
         

@@ -46,18 +46,22 @@ class FacturasFicherosCSV extends Controlador {
             !empty($_POST['fechafin']) &&
             !empty($_POST['idclientesearch'])
         ) {
-            $idCliente = (int)$_POST['idclientesearch'];
             $fechaInicio = $_POST['fechainicio'];
             $fechaFin = $_POST['fechafin'];
+            $clientesArray = $_POST['idclientesearch']; // Esto es un array [1, 5, 12...]
 
-            $query_search = " fac.idcliente = $idCliente ";
+            // 2. Limpiamos y preparamos los IDs para la consulta SQL
+            $idsClientes = array_map('intval', $clientesArray);
+            $stringIds = implode(',', $idsClientes);
+
+            // 3. Construimos la query usando IN en lugar de =
+            $query_search = " fac.idcliente IN ($stringIds) ";
             $query_search .= " AND fac.fecha BETWEEN '$fechaInicio' AND '$fechaFin' ";
 
             if ($_POST['estado_factura'] !== 'todos') {
                 $estado = $_POST['estado_factura'];
                 $query_search .= " AND fac.estado_exportar = '$estado' ";
             }
-
 
             $resultado = $this->modeloFacturasClientesCSV
                 ->getFacturasConFiltros($query_search);
@@ -73,6 +77,45 @@ class FacturasFicherosCSV extends Controlador {
         echo json_encode($respuesta);
     }
 
+    public function obtenerFacturasFilasMasivo() {
+        // 1. Validamos que lleguen IDs
+        if (!isset($this->fetch["ids"]) || !is_array($this->fetch["ids"]) || empty($this->fetch["ids"])) {
+            echo json_encode(['error' => true, 'mensaje' => 'No s’han seleccionat factures']);
+            return;
+        }
+
+        $idsEnviados = $this->fetch["ids"]; 
+        $strIds = implode(",", $idsEnviados);
+        
+        // 2. Obtenemos las facturas (vienen desordenadas de la DB)
+        $facturasDB = $this->modeloFacturasClientesCSV->getFacturasPorIdString($strIds);
+
+        if ($facturasDB) {
+            // 3. Re-ordenamos los objetos según el orden de $idsEnviados
+            // Creamos un mapa indexado por ID para acceder rápido
+            $mapaFacturas = [];
+            foreach ($facturasDB as $f) {
+                $mapaFacturas[$f->id] = $f;
+            }
+
+            $htmlTotal = '';
+            // 4. Recorremos el array original de IDs para construir el HTML en ese orden
+            foreach ($idsEnviados as $id) {
+                if (isset($mapaFacturas[$id])) {
+                    $htmlTotal .= TemplateHelper::getFilaFacturaSeleccionada($mapaFacturas[$id]);
+                }
+            }
+
+            echo json_encode([
+                'error' => false,
+                'html_facturas' => $htmlTotal
+            ]);
+        } else {
+            echo json_encode(['error' => true, 'mensaje' => 'No s’han trobat les factures']);
+        }
+    }
+
+
     public function obtenerFacturaFila() {
         if ( !isset($this->fetch["id"]) || empty($this->fetch["id"]) ) {
             echo json_encode(['error' => true, 'mensaje' => 'Falten dades']);
@@ -85,11 +128,32 @@ class FacturasFicherosCSV extends Controlador {
                 $html = TemplateHelper::getFilaFacturaSeleccionada($factura);
                 echo json_encode([
                     'error' => false, 
-                    'html_factura' => $html // Este nombre debe coincidir con el JS
+                    'html_factura' => $html 
                 ]);
             } else {
                 echo json_encode(['error' => true, 'mensaje' => 'Factura no trobada']);
             }
+    }
+
+    private function getDiccionarioCamposObligatorios() {
+        return [
+            'numero'               => 'Número de Factura',
+            'fecha'                => 'Data de factura',
+            'cifpiensos'           => 'CIF de lEmisor',
+            'razonsocialpiensos'   => 'Raó Social Emissor',
+            'direccionpiensos'     => 'Direcció Emissor',
+            'codigopostalpiensos'  => 'CP Emissor',
+            'localidadpiensos'     => 'Localitat Emissor',
+            'provinciapiensos'     => 'Provincia Emissor',
+            'cliente_nif'          => 'Identificador Receptor',
+            'cliente_nombre'       => 'Nom Receptor',
+            'cliente_direccion'    => 'Direcció Receptor',
+            'cliente_cp'           => 'CP Receptor',
+            'cliente_poblacion'    => 'Població Receptor',
+            'cliente_provincia'    => 'Provincia Receptor',
+            'total'                => 'Import Total',
+            'vencimiento'          => 'Data Venciment'
+        ];
     }
 
     private function prepararFilaFactura($f)
@@ -112,7 +176,7 @@ class FacturasFicherosCSV extends Controlador {
             $f->cliente_poblacion,          // O: POBLACIÓN RECEPTOR
             $f->cliente_provincia,          // P: PROVINCIA RECEPTOR
             "EUR",                          // Q: MONEDA
-            number_format($f->total, 2, ',', ''),                      // R: IMPORTE TOTAL
+            number_format($f->total, 2, ',', ''), // R: IMPORTE TOTAL
             $f->vencimiento,                // S: FECHA VENCIMIENTO
             $f->codigob2brouter,                // T: MÉTODO DE PAGO
             $f->numerocuenta,               // U: IBAN o BIC
@@ -177,94 +241,193 @@ class FacturasFicherosCSV extends Controlador {
 
     public function exportarCSV()
     {
-        $respuesta['error'] = true;
-        $respuesta['mensaje'] = 'Error al generar el fitxer';
+        $respuesta = ['error' => true, 'mensaje' => 'Error al generar el fitxer'];
 
-        if(isset($_POST['idfacturaSelected']) && count($_POST['idfacturaSelected']) > 0) {
+        if (!isset($_POST['idfacturaSelected']) || empty($_POST['idfacturaSelected'])) {
+            $respuesta['mensaje'] = 'No hi ha factures seleccionades';
+            echo json_encode($respuesta);
+            return;
+        }
+
+        $idsEnviados = $_POST['idfacturaSelected'];
+        $facturasDB = $this->modeloFacturasClientesCSV->getFacturasPorIdString(implode(",", $idsEnviados));
+
+        if ($facturasDB) {
             
-            $strIdesFactura = implode(",", $_POST['idfacturaSelected']);
-            $facturas = $this->modeloFacturasClientesCSV->getFacturasPorIdString($strIdesFactura);
+            $erroresValidacion = [];
+            $camposCAB = $this->getDiccionarioCamposObligatorios();
+            $camposDET = $this->getDiccionarioCamposObligatoriosDetalle();
 
-            if($facturas){
-                $filename = "exportacion_facturas_" . date('Ymd_His') . ".csv";
-                $f = fopen('php://temp', 'r+'); 
-                $contadorExportadas = 0;
+            foreach ($facturasDB as $f) {
+                $faltantesCab = [];
+                $errorDetalle = ""; // Para guardar si no hay líneas o faltan campos en ellas
 
-                foreach ($facturas as $factura) {
+                // --- VALIDAR CABECERA ---
+                foreach ($camposCAB as $key => $nombreAmigable) {
+                    $valorCab = isset($f->$key) ? trim((string)$f->$key) : '';
                     
-                    $actualizado = $this->modeloFacturasClientesCSV->updateFieldTablaByStringIn(
-                        'clientes_facturas', 
-                        'estado_exportar', 
-                        'exportada', 
-                        $factura->id 
-                    );
+                    // Condición: Está vacío
+                    $esVacio = ($valorCab === '');
+                    
+                    // Condición especial: Si es el campo 'total', no puede ser '0' ni '0.00'
+                    $esCeroInvalido = ($key === 'total' && ($valorCab === '0' || $valorCab === '0.00' || $valorCab === '0,00'));
 
-                    if($actualizado) {
-                        $contadorExportadas++;
-
-                        // 1. CABECERA
-                        fputcsv($f, $this->prepararFilaFactura($factura), ";");
-
-                        // 2. FILA AUXILIAR
-                        fputcsv($f, $this->prepararFilaPet(), ";");
-
-                        // 3. DETALLES
-                        $lineas = $this->modeloFacturasClientesCSV->getLineasFactura($factura->id);
-                        foreach ($lineas as $linea) {
-                            fputcsv($f, $this->prepararFilaDetalle($linea), ";");
-                        }
-
-                        // 4. IVA
-                        fputcsv($f, $this->prepararFilaIVA(), ";");
-
-                        // 5. RECTIFICADA (Nueva posición: después de IVA)
-                        fputcsv($f, $this->prepararFilaFacturaRectificada(), ";");
-
-                        // 6. FACTORING (Nueva posición: después de RECTIFICADA)
-                        fputcsv($f, $this->prepararFilaFactoring(), ";");
-
-                        // 7. VARIOS VENCIMIENTOS (Nueva posición: después de FACTORING)
-                        fputcsv($f, $this->prepararFilaVariosVencimientos(), ";");
-
-                        //8. EDI (Nueva posición: después de VARIOS VENCIMIENTOS)
-                        fputcsv($f, $this->prepararFilaEdi(), ";");
+                    if ($esVacio || $esCeroInvalido) {
+                        $faltantesCab[] = $nombreAmigable;
                     }
                 }
 
-                if($contadorExportadas > 0) {
-                    rewind($f);
-                    $csvContent = stream_get_contents($f);
-                    fclose($f);
-
-                    $respuesta['error'] = false;
-                    $respuesta['mensaje'] = "S'han exportat $contadorExportadas factures correctament";
-                    $respuesta['csvData'] = $csvContent; 
-                    $respuesta['filename'] = $filename;
+                // --- VALIDAR DETALLE (Líneas) ---
+                $lineas = $this->modeloFacturasClientesCSV->getLineasFactura($f->id);
+                
+                if (empty($lineas)) {
+                    $errorDetalle = "No hi ha detall per a aquesta factura";
                 } else {
-                    $respuesta['mensaje'] = "No s'ha pogut actualitzar l'estat de ninguna factura. No s'ha generat el fitxer.";
+                    $camposFaltantesEnLineas = [];
+                    $camposNoCero = ['idproducto', 'cantidad', 'precio', 'subtotal'];
+                    foreach ($lineas as $linea) {
+                        foreach ($camposDET as $key => $nombreAmigable) {
+                            $valor = isset($linea->$key) ? trim((string)$linea->$key) : '';
+
+                            // Condición: Está vacío O (está en la lista de no-ceros y su valor es 0)
+                            $esVacio = ($valor === '');
+                            $esCeroInvalido = (in_array($key, $camposNoCero) && ($valor === '0' || $valor === '0.00'));
+
+                            if ($esVacio || $esCeroInvalido) {
+                                $camposFaltantesEnLineas[] = $nombreAmigable;
+                            }
+                        }
+                    }
+                    
+                    if (!empty($camposFaltantesEnLineas)) {
+                        $unicos = array_unique($camposFaltantesEnLineas);
+                        $errorDetalle = "Al detall de la factura li falta o és zero: " . implode(", ", $unicos);
+                    }
+                }
+
+                // Si hay algún error en esta factura, lo registramos
+                if (!empty($faltantesCab) || !empty($errorDetalle)) {
+                    $erroresValidacion[] = [
+                        'numero' => $f->numero,
+                        'campos' => $faltantesCab,
+                        'errorDetalle' => $errorDetalle
+                    ];
                 }
             }
-        } else {
-            $respuesta['mensaje'] = 'No hi ha factures seleccionades';
+
+            if (!empty($erroresValidacion)) {
+                echo json_encode([
+                    'error' => true,
+                    'tipo' => 'VALIDACION_DATOS',
+                    'detalles' => $erroresValidacion
+                ]);
+                return;
+            }
+
+            // --- SI TODO ESTÁ BIEN, PROCEDER A GENERAR EL CSV ---
+            $mapaFacturas = [];
+            foreach ($facturasDB as $f) { $mapaFacturas[$f->id] = $f; }
+
+            $f_temp = fopen('php://temp', 'r+');
+            $contadorExportadas = 0;
+
+            foreach ($idsEnviados as $id) {
+                if (isset($mapaFacturas[$id])) {
+                    if ($this->procesarFacturaIndividual($mapaFacturas[$id], $f_temp)) {
+                        $contadorExportadas++;
+                    }
+                }
+            }
+
+            if ($contadorExportadas > 0) {
+                rewind($f_temp);
+                $respuesta = [
+                    'error' => false,
+                    'mensaje' => "S'han exportat $contadorExportadas factures correctament",
+                    'csvData' => stream_get_contents($f_temp),
+                    'filename' => "exportacion_facturas_" . date('Ymd_His') . ".csv"
+                ];
+            }
+            fclose($f_temp);
         }
 
         echo json_encode($respuesta);
     }
 
+    //Función Auxiliar: Gestiona el flujo de una sola factura (BD, CSV y Log)
+    private function procesarFacturaIndividual($factura, $f)
+    {
+        // 1. Intentar actualizar el estado en la base de datos
+        $actualizado = $this->modeloFacturasClientesCSV->updateFieldTablaByStringIn(
+            'clientes_facturas', 'estado_exportar', 'exportada', $factura->id
+        );
+
+        if (!$actualizado) return false;
+
+        // 2. Generar filas y escribir en el CSV físico
+        $filaCab = $this->prepararFilaFactura($factura);
+        fputcsv($f, $filaCab, ";");
+        fputcsv($f, $this->prepararFilaPet(), ";");
+
+        $lineas = $this->modeloFacturasClientesCSV->getLineasFactura($factura->id);
+        $infoLog = implode(";", $filaCab) . PHP_EOL; // Iniciar cadena para el log con CAB
+
+        foreach ($lineas as $linea) {
+            $filaDet = $this->prepararFilaDetalle($linea);
+            fputcsv($f, $filaDet, ";");
+            $infoLog .= implode(";", $filaDet) . PHP_EOL; // Añadir DET a la cadena del log
+        }
+
+        // Escribir el resto de filas técnicas en el CSV
+        fputcsv($f, $this->prepararFilaIVA(), ";");
+        fputcsv($f, $this->prepararFilaFacturaRectificada(), ";");
+        fputcsv($f, $this->prepararFilaFactoring(), ";");
+        fputcsv($f, $this->prepararFilaVariosVencimientos(), ";");
+        fputcsv($f, $this->prepararFilaEdi(), ";");
+
+        // 3. Registrar el Log de forma limpia
+        $this->registrarLog($factura, $infoLog);
+
+        return true;
+    }
+      //Función Auxiliar: Encapsula la inserción del log
+    private function registrarLog($factura, $contenido)
+    {
+        $datosLog = [
+            'idfacturaexportada'     => $factura->id,
+            'numerofacturaexportada' => $factura->numero,
+            'usuarioexportador'      => $_SESSION['usuario'] ?? 'Desconocido',
+            'infoexportada'          => $contenido
+        ];
+        return $this->modeloFacturasClientesCSV->insertarLogExportacion($datosLog);
+    }
+
+        private function getDiccionarioCamposObligatoriosDetalle() {
+        return [
+            'idproducto'      => 'Codi de Producte',
+            'descripcion'     => 'Nom del Producte',
+            'cantidad'        => 'Quantitat',
+            'precio'          => 'Preu',
+            'subtotal'        => 'Base Imponible',
+            'ivatipo'         => '% Impost',
+            'descuentolinea'  => 'Descompte de Línia'
+        ];
+    }
+
     private function prepararFilaDetalle($linea)
     {
         return [
-            "DET",                          // A: TIPO REGISTRO
-            $linea->idproducto,             // B: CÓDIGO PRODUCTO
-            $linea->descripcion,            // C: NOMBRE PRODUCTO
-            number_format($linea->cantidad, 2, ',', ''),               // D: CANTIDAD
+            "DET",                          // A: TIPO REGISTRO =M
+            $linea->idproducto,             // B: CÓDIGO PRODUCTO =M
+            $linea->descripcion,            // C: NOMBRE PRODUCTO =M
+            number_format($linea->cantidad, 2, ',', ''),// D: CANTIDAD =M
             $linea->unidad,                 // E: UNIDAD
-            number_format($linea->precio, 2, ',', ''),                 // F: PRECIO
-            number_format($linea->descuentotipo, 2, ',', ''), // G: % DTO (Vacío según instrucción)
-            number_format($linea->descuentolinea, 2, ',', ''),       // H: DESCUENTO (De la factura)
-            number_format($linea->ivatipo, 2, ',', ''),               // I: % IMPUESTO (De la factura)
-            number_format($linea->subtotal, 2, ',', ''),          // J: BASE IMPONIBLE (De la factura)
-            number_format($linea->importetotal, 2, ',', ''),                  // K: IMPORTE TOTAL (De la factura)
+            number_format($linea->precio, 2, ',', ''),// F: PRECIO =M
+            number_format($linea->descuentotipo, 2, ',', ''), // G: % DTO 
+            number_format($linea->descuentolinea, 2, ',', ''),// H: DESCUENTO =M
+            number_format($linea->ivatipo, 2, ',', ''),// I: % IMPUESTO =M
+            number_format($linea->subtotal, 2, ',', ''),          // J: BASE IMPONIBLE =M
+            number_format($linea->importetotal, 2, ',', ''),                  // K: IMPORTE TOTAL 
             "",                             // L: INFO ADICIONAL LINEA
             "",                             // M: PEDIDO
             "",                             // N: LINEA EN EL PEDIDO

@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo RUTA_URL ?>/public/css/main.css">
         <link rel="stylesheet" type="text/css" href="<?php echo RUTA_URL ?>/public/css/componente_tabla.css">        
         <link rel="stylesheet" type="text/css" href="<?php echo RUTA_URL ?>/public/css/styles.css">   
+        <link rel="stylesheet" href="<?php echo RUTA_URL; ?>/public/css/tail.select-light.min.css">
         <script src="<?php echo RUTA_URL; ?>/public/js/importadorMain.js" type="module"></script>     
         
         

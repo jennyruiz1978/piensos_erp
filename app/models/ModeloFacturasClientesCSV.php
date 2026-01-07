@@ -27,7 +27,9 @@ class ModeloFacturasClientesCSV{
                 fac.total,
                 fac.estado,
                 fac.vencimiento,
-                fac.estado_exportar
+                fac.estado_exportar,
+                -- Añadimos el conteo de exportaciones
+                (SELECT COUNT(*) FROM logexportacionfacturas log WHERE log.idfacturaexportada = fac.id) as num_exportaciones
             FROM clientes_facturas fac
             WHERE $query_search
             ORDER BY fac.fecha DESC
@@ -36,9 +38,13 @@ class ModeloFacturasClientesCSV{
         return $this->db->registros();
     }
 
-    public function obtenerFacturaPorId($id) 
-    {
-        $this->db->query("SELECT * FROM clientes_facturas WHERE id = :id");
+    public function obtenerFacturaPorId($id) {
+        // Usamos un subquery o un JOIN para contar las exportaciones
+        $this->db->query("SELECT f.*, 
+            (SELECT COUNT(*) FROM logexportacionfacturas l WHERE l.idfacturaexportada = f.id) as num_exportaciones
+            FROM clientes_facturas f 
+            WHERE f.id = :id");
+        
         $this->db->bind(':id', $id);
         return $this->db->registro();
     }
@@ -76,7 +82,9 @@ class ModeloFacturasClientesCSV{
                 fp.codigob2brouter,
                 cb.numerocuenta,
                 fac.descuentotipo, fac.descuentoimporte,
-                (SELECT prov.nif FROM proveedores prov LIMIT 1) as proveedor_nif
+                (SELECT prov.nif FROM proveedores prov LIMIT 1) as proveedor_nif,
+                -- Añadimos el conteo de exportaciones aquí también
+                (SELECT COUNT(*) FROM logexportacionfacturas log WHERE log.idfacturaexportada = fac.id) as num_exportaciones
             FROM clientes_facturas fac
             CROSS JOIN configuracion conf
             LEFT JOIN clientes cli ON fac.idcliente = cli.id
@@ -105,6 +113,19 @@ class ModeloFacturasClientesCSV{
         return $this->db->registros();
     }
 
+    public function insertarLogExportacion($datos) {
+        $this->db->query("INSERT INTO logexportacionfacturas 
+            (idfacturaexportada, numerofacturaexportada, usuarioexportador, fechaexportacion, infoexportada) 
+            VALUES 
+            (:idfacturaexportada, :numerofacturaexportada, :usuarioexportador, NOW(), :infoexportada)");
+
+        $this->db->bind(':idfacturaexportada', $datos['idfacturaexportada']);
+        $this->db->bind(':numerofacturaexportada', $datos['numerofacturaexportada']);
+        $this->db->bind(':usuarioexportador', $datos['usuarioexportador']);
+        $this->db->bind(':infoexportada', $datos['infoexportada']);
+
+        return $this->db->execute();
+    }
 
 
 }

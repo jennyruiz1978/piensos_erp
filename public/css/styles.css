@@ -1074,3 +1074,10 @@ span.etiqueta_email {
     display: inline-flex;
     justify-content: space-between;
 }
+
+.tail-select {
+    width: 100% !important;
+}
+
+
+

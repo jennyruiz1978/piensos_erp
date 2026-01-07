@@ -28,17 +28,16 @@
                            <div class="col-md-4 cont_field_prod">
                               <label for="idclientesearch" class="form-label label_form_grilla">Client</label>                                        
 
-                              <select class="form-control" name="idclientesearch" id="idclientesearch">
-                                 <option selected disabled value="">Seleccionar</option>
+                              <select class="form-control" name="idclientesearch[]" id="idclientesearch" multiple>
+                                 <option value="">Seleccionar</option>
                                  <?php
-                                    if(isset($datos['clientes']) && count($datos['clientes']) > 0){
-                                       foreach ($datos['clientes'] as $cli) {
-                                          echo"<option value='".$cli->id."'>".$cli->nombrefiscal."</option>";
+                                       if(isset($datos['clientes']) && count($datos['clientes']) > 0){
+                                          foreach ($datos['clientes'] as $cli) {
+                                             echo"<option value='".$cli->id."'>".$cli->nombrefiscal."</option>";
+                                          }
                                        }
-                                    }
-                                 ?>                                            
-                              </select>                                           
-
+                                 ?>                                                            
+                              </select>                                          
                            </div>
                         
                            <div class="col-md-2 cont_field_prod">
@@ -62,7 +61,12 @@
                      <div class="row mx-0 cont_main_fact mb-4">
                      
                         <div class="col-md-6 cont_side_fact">
-                           <label class="form-label label_form_grilla">Facturas</label>
+                           <div class="d-flex justify-content-between align-items-center mb-3">
+                                 <label class="form-label label_form_grilla mb-0">Facturas</label>
+                                 <button class="btn btn-primary btn-sm" id="btnAccionFacturas">
+                                    afegir totes
+                                 </button>
+                           </div>
                            <div id="resultado_busqueda_alb">
                               <table class="table table-bordered table-hover" id="tablaGrillaFacturaPrincipal">
                                  <thead>
@@ -83,7 +87,12 @@
                         </div>
                         
                         <div class="col-md-6 cont_side_fact">
-                           <label class="form-label label_form_grilla">Factures a exportar</label>
+                           <div class="d-flex justify-content-between align-items-center mb-3">
+                                 <label class="form-label label_form_grilla">Factures a exportar</label>
+                                 <button class="btn btn-primary btn-sm" id="btnLimpiarfacturas">
+                                    Netejar taula
+                                 </button>
+                           </div>
 
                            <form id="formulario_crear_factura_masiva" class="cont_crear_factura_masiva">
                            
@@ -106,9 +115,10 @@
                                                         <th class="text-left">Nº factura</th>
                                                         <th>Data</th>
                                                         <th>Quant.</th>
-                                                         <th>Unit.</th>               
+                                                        <th>Unit.</th>               
                                                         <th>Total</th> 
                                                         <th>Accions</th>
+                                                        <th>Nº exportacions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
