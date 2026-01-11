@@ -180,6 +180,15 @@ class ModeloFacturaCliente{
         return $descuentotipo;
     }
     
- 
+    //FUNCION QUE TRAE LOS DATOS DEL HISTORIAL DE EXPORTACION
+    public function getExportLogHistory($idFactura) {
+        $this->db->query("SELECT usuarioexportador, fechaexportacion 
+                        FROM logexportacionfacturas 
+                        WHERE idfacturaexportada = '$idFactura' 
+                        ORDER BY fechaexportacion DESC");
+        return $this->db->registros(); // Obtenemos el array de objetos
+    }
+    
+
 
 }

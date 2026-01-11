@@ -106,6 +106,7 @@
                            
                            <br><br>
 
+                           <!-- CONTENEDOR DE ALBARANES Y RECIBOS -->
                            <div class="row">
 
                                  <div class="col-md-6 mt-3 cont_albaranes_fact">
@@ -166,9 +167,37 @@
                                                                   
                                  </div>    
 
-                           </div>
-                           
+                           </div> <!-- FIN DEL ROW DE ALBARANES Y RECIBOS -->
 
+                           <!-- HISTORIAL DE EXPORTACIONES - NUEVA SECCIÓN -->
+                           <div class="row mt-5">
+                              <div class="col-md-12">
+                                 <label class="form-label label_form_grilla mb-4">Historial d'Exportacions</label>
+                                 
+                                 <div class="export-timeline ml-3">
+                                       <?php if (!empty($datos['historialExportacion'])): ?>
+                                          <?php foreach ($datos['historialExportacion'] as $log): ?>
+                                             <div class="timeline-item">
+                                                 <!-- ACA VA EL ICONO-->
+                                                   <div class="timeline-icon icon_profile">
+                                                      <i class="fas fa-user"></i>
+                                                   </div>
+                                                   <div class="timeline-content">
+                                                      <div class="user-name">
+                                                         <?php echo htmlspecialchars($log->usuarioexportador); ?>
+                                                      </div>
+                                                      <div class="export-date">
+                                                         Exportat el <?php echo date('Y/m/d H:i', strtotime($log->fechaexportacion)); ?>
+                                                      </div>
+                                                   </div>
+                                             </div>
+                                          <?php endforeach; ?>
+                                       <?php else: ?>
+                                          <p class="text-muted small italic">No hi ha registres d'exportació.</p>
+                                       <?php endif; ?>
+                                 </div>
+                              </div>
+                           </div> <!-- FIN HISTORIAL DE EXPORTACIONES -->
 
                         </form>
                         <div style="display:none;">

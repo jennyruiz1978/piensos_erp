@@ -62,6 +62,7 @@ class FacturasClientes extends Controlador {
         $this->vista('facturasCliente/facturas', $datos);
     }
 
+    //ESTA ES LA FUNCION QUE CARGA LAS FACTURAS EN LA TABLA
     public function tablaFacturasCliente()
     {  
         $page = $_POST['numPagina'];
@@ -76,7 +77,7 @@ class FacturasClientes extends Controlador {
         $findme   = 'lower(concat';
         $pos = strpos($mystring, $findme);       
         
-        $where = str_replace("fecha like", "DATE_FORMAT(fac.fecha, '%d/%m/%Y') like", $where);        
+        $where = str_replace("fecha like", "DATE_FORMAT(fac.fecha, '%Y/%m/%d') like", $where);        
         
         $facturas = $this->modeloFacturaCliente->obtenerFacturasClientesTabla($page,$order,$where,$limit);
         $totalRegistros = $this->modeloFacturaCliente->obtenerTotalFacturasCliente($where);
@@ -348,8 +349,7 @@ class FacturasClientes extends Controlador {
     }
 
     
-    public function verFactura($idFactura){
-        
+    public function verFactura($idFactura){        
         if(isset($idFactura) && $idFactura > 0){
                         
             if($this->modeloBase->existIdInvoice($this->tabla, $idFactura) > 0){
@@ -359,18 +359,22 @@ class FacturasClientes extends Controlador {
 
                 $detalle['html'] = $this->construirBodyTablaGrilla($idFactura, $tipo);
                 $clientes = $this->modeloCliente->getEnabledClients();
-    
+
+                // OBTENER HISTORIAL DE EXPORTACIONES
+                $historialExportacion = $this->modeloFacturaCliente->getExportLogHistory($idFactura);
+
                 $tmp = [
                     'idFactura' => $idFactura,
                     'clientes' => $clientes,                    
                     'formacobro' => $this->modeloFormasPago->getPaymentForms(),
-                    'cuentasbancarias' => $this->modeloCuentasBancarias->getBankAccounts()
+                    'cuentasbancarias' => $this->modeloCuentasBancarias->getBankAccounts(),
+                    'historialExportacion' => $historialExportacion // Agregar historial al array
                 ];
                 
                 $datos = array_merge($tmp, $cabecera, $detalle);     
-               
+            
                 $this->vista('facturasCliente/verFactura', $datos);
-    
+
             }else{        
                 redireccionar('/FacturasClientes');
             }

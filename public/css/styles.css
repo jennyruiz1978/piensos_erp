@@ -1079,5 +1079,53 @@ span.etiqueta_email {
     width: 100% !important;
 }
 
+.export-timeline {
+    position: relative;
+    padding-left: 45px;
+}
+
+/* La línea vertical conectora */
+.export-timeline::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e2e8f0; /* Color gris suave */
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+/* El círculo del avatar */
+.timeline-icon{
+    position: absolute;
+    left: -45px;
+    width: 38px;
+    height: 38px;
+    background: #39B34A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 1;
+}
+
+.timeline-content .user-name {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+    color: #000;
+}
+
+.timeline-content .export-date {
+    font-size: 0.95rem;
+    color: #4a5568;
+}
 
 
