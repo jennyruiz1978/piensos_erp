@@ -34,7 +34,18 @@ document.addEventListener("DOMContentLoaded", () => {
             if(buscarfacturaCli){
                 buscarfacturaCli.addEventListener('click', function () {
                     let ruta = urlCompleta + '/FacturasFicherosCSV/obtenerFacturasConFiltros'; 
-                    let datosForm = new FormData(formulario_filtros_buscar_facturas);                  
+                    let datosForm = new FormData(formulario_filtros_buscar_facturas);          
+                    
+                     // 🔴 IMPORTANTE: eliminamos el valor incorrecto
+                    datosForm.delete('idclientesearch[]');
+
+                    // ✅ Obtenemos los valores reales desde tail.select
+                    let clientesSeleccionados = tail.select("#idclientesearch").value();
+
+                    clientesSeleccionados.forEach(id => {
+                        datosForm.append('idclientesearch[]', id);
+                    });
+
                     new DB(ruta, 'POST').post(datosForm).then((data => {                
                         if(data.error == true){
                             Swal.fire({ title: 'Error', text: data.mensaje, icon: 'error' });  

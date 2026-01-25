@@ -36,6 +36,7 @@ class FacturasFicherosCSV extends Controlador {
 
    public function obtenerFacturasConFiltros()
     {
+      
         $respuesta = [
             'error' => true,
             'mensaje' => ERROR_DOESNT_EXIST
@@ -46,6 +47,8 @@ class FacturasFicherosCSV extends Controlador {
             !empty($_POST['fechafin']) &&
             !empty($_POST['idclientesearch'])
         ) {
+
+
             $fechaInicio = $_POST['fechainicio'];
             $fechaFin = $_POST['fechafin'];
             $clientesArray = $_POST['idclientesearch']; // Esto es un array [1, 5, 12...]
@@ -63,8 +66,13 @@ class FacturasFicherosCSV extends Controlador {
                 $query_search .= " AND fac.estado_exportar = '$estado' ";
             }
 
+            
+            
             $resultado = $this->modeloFacturasClientesCSV
                 ->getFacturasConFiltros($query_search);
+
+             
+           
 
             $respuesta['error'] = false;
             $respuesta['mensaje'] = '';

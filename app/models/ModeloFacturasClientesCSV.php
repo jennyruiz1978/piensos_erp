@@ -33,7 +33,7 @@ class ModeloFacturasClientesCSV{
             FROM clientes_facturas fac
             WHERE $query_search
             ORDER BY fac.fecha DESC
-        ");
+        ");               
 
         return $this->db->registros();
     }
