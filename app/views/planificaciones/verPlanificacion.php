@@ -54,13 +54,48 @@
 
                                 </div>
 
+                                <div class="row pl-3 pr-3 mb-4 flex items-center">
+                                    <div class="flex-grow mr-2">
+                                        <label for="comentario_planificacion" class="form-label" style="font-weight: 700;">Comentaris</label>
+                                        <textarea 
+                                            name="comentario_planificacion" 
+                                            id="comentario_planificacion" 
+                                            class="form-control w-full" 
+                                            rows="2" 
+                                            placeholder="Escriu un comentari..."><?php echo $datos['detalles']->comentario ?? ''; ?></textarea>
+                                    </div>
+
+                                    <div class="flex-none mt-4" id="btnlisto">
+                                        <button type="button" id="btn_confirmar_accion" class="hover:scale-105 transition-transform">
+                                            <img src="<?php echo RUTA_URL;?>/public/img/comprobado.png" alt="Confirmar" style="width: 45px; height: 45px;">
+                                        </button>
+                                    </div>
+                                </div>
                                         
                                 <div class="cont_button_product_left pl-3" id="container_agregar_fila">
                                     <a class="button_small_bar colorverde" id="agregar_linea"><i class="fas fa-plus"></i><span>Afegeix línia</span></a> 
                                 </div>     
                                 
-                                <div class="row pl-3" id="container_fechas_cantidades_recojos">
-                                    <?php echo $datos['html'];?>    
+                                <div class="contenedor-planificacion-relativo">
+                                    
+                                    <a href="<?php echo ($datos['idAnterior']) ? RUTA_URL.'/Planificaciones/verPlanificacion/'.$datos['idAnterior'] : 'javascript:void(0)'; ?>" 
+                                    id="btn_scroll_izq" 
+                                    class="btn-nav flecha-navegacion flecha-izq <?php echo (!$datos['idAnterior']) ? 'opacity-50 cursor-not-allowed' : ''; ?>"
+                                    data-mensaje="No hi ha cap planificació anterior.">
+                                        <img src="<?php echo RUTA_URL;?>/public/img/flecha-izquierda.png" alt="Anterior">
+                                    </a>
+
+                                    <div class="row pl-3" id="container_fechas_cantidades_recojos">
+                                        <?php echo $datos['html'];?>    
+                                    </div>
+
+                                    <a href="<?php echo ($datos['idSiguiente']) ? RUTA_URL.'/Planificaciones/verPlanificacion/'.$datos['idSiguiente'] : 'javascript:void(0)'; ?>" 
+                                    id="btn_scroll_der" 
+                                    class="btn-nav flecha-navegacion flecha-der <?php echo (!$datos['idSiguiente']) ? 'opacity-50 cursor-not-allowed' : ''; ?>"
+                                    data-mensaje="No hi ha cap planificació següent.">
+                                        <img src="<?php echo RUTA_URL;?>/public/img/flecha-derecha.png" alt="Siguiente">
+                                    </a>
+
                                 </div>
 
                                 <div class="row pl-3 pt-3" id="container_totales">

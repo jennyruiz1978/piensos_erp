@@ -883,20 +883,27 @@ class Planificaciones extends Controlador {
 
             $idProductoDefault = $this->modeloConfiguracion->getProductCarrierOrProductPlanningDefault();
 
+            // 1. Preparamos TODOS los datos en un solo array
             $datos = [
                 'idPlanificacion' => $idPlanificacion,
-                'html' => $this->construirDatosTablaPlanificacionSemanal($idPlanificacion),
-                'detalles' => $this->modeloPlanificacion->getPlanningById($idPlanificacion),
-                'tieneDatos' => $this->modeloPlanificacionFechas->countPlanningDates($idPlanificacion),
-                'unidad' => 'Kg',
-                'idProducto' => $idProductoDefault,
-                'nombreProducto' => $this->obtenerNombreProductoCompra($idProductoDefault)
+                'html'            => $this->construirDatosTablaPlanificacionSemanal($idPlanificacion),
+                'detalles'        => $this->modeloPlanificacion->getPlanningById($idPlanificacion),
+                'tieneDatos'      => $this->modeloPlanificacionFechas->countPlanningDates($idPlanificacion),
+                'unidad'          => 'Kg',
+                'idProducto'      => $idProductoDefault,
+                'nombreProducto'  => $this->obtenerNombreProductoCompra($idProductoDefault),
+                
+                // Agregamos los IDs para las flechas aquí mismo
+                'idSiguiente'     => $this->modeloPlanificacion->obtenerIdSiguiente($idPlanificacion),
+                'idAnterior'      => $this->modeloPlanificacion->obtenerIdAnterior($idPlanificacion)
             ];
+
+            // 2. Llamamos a la vista una sola vez con el array completo
             $this->vista('planificaciones/verPlanificacion', $datos);
-        }else{
+
+        } else {
             redireccionar('/Planificaciones');
         }
-        
     }
 
     public function obtenerDatosParaFilaNueva()
@@ -1599,6 +1606,28 @@ class Planificaciones extends Controlador {
         }
         print_r(json_encode($respuesta));
     }
+
+    public function actualizarComentario() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $comentario = $_POST['comentario'];
+
+            // Llamada al modelo
+            if ($this->modeloPlanificacion->actualizarComentario($id, $comentario)) {
+                $respuesta = [
+                    'error' => false,
+                    'mensaje' => 'Comentari actualitzat correctament'
+                ];
+            } else {
+                $respuesta = [
+                    'error' => true,
+                    'mensaje' => 'No s\'ha podido actualizar el comentario'
+                ];
+            }
+            echo json_encode($respuesta);
+        }
+    }
+
 
 
 }

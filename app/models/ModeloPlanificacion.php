@@ -248,4 +248,33 @@ class ModeloPlanificacion{
         return $semana;
     }
 
+    public function actualizarComentario($id, $comentario) {
+        $this->db->query("UPDATE planificaciones SET comentario = :comentario WHERE id = :id");
+        
+        $this->db->bind(':comentario', $comentario);
+        $this->db->bind(':id', $id);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function obtenerIdSiguiente($idActual) {
+        $this->db->query("SELECT id FROM planificaciones WHERE id > :id ORDER BY id ASC LIMIT 1");
+        $this->db->bind(':id', $idActual);
+        $fila = $this->db->registro();
+        return ($fila) ? $fila->id : null;
+    }
+
+    public function obtenerIdAnterior($idActual) {
+        $this->db->query("SELECT id FROM planificaciones WHERE id < :id ORDER BY id DESC LIMIT 1");
+        $this->db->bind(':id', $idActual);
+        $fila = $this->db->registro();
+        return ($fila) ? $fila->id : null;
+    }
+
+
+
 }

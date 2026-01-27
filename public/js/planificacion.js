@@ -607,6 +607,68 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Manejo de alertas para flechas de navegación
+    $(document).on('click', '.btn-nav', function(e) {
+        // Si el href contiene 'javascript:void(0)', significa que no hay ID
+        if (this.getAttribute('href') === 'javascript:void(0)') {
+            e.preventDefault(); // Evita cualquier acción
+            
+            const mensaje = this.getAttribute('data-mensaje');
+            
+            Swal.fire({
+                title: 'Atenció',
+                text: mensaje,
+                icon: 'info',
+                confirmButtonText: 'D’acord',
+                confirmButtonColor: '#3085d6'
+            });
+        }
+    });
+
+    // Escuchar el botón de confirmar acción (guardar comentario)
+    const btn_confirmar_accion = document.getElementById('btn_confirmar_accion');
+    if (btn_confirmar_accion) {
+        btn_confirmar_accion.addEventListener('click', function () {
+            let idPlanificacion = document.getElementById('idPlanificacion').value;
+            let comentario = document.getElementById('comentario_planificacion').value;
+
+            if (idPlanificacion != '') {
+                let ruta = urlCompleta + '/Planificaciones/actualizarComentario';
+                let data = `id=${idPlanificacion}&comentario=${encodeURIComponent(comentario)}`;
+
+                let loader = document.getElementById('loader_planificacion');
+                if(loader) loader.style.display = 'block';
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", ruta, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                
+                xhr.send(data);
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(loader) loader.style.display = 'none';
+                        
+                        let respuesta = JSON.parse(this.responseText);
+                        if (respuesta.error == false) {
+                            Swal.fire({
+                                title: 'Guardat!',
+                                text: respuesta.mensaje,
+                                icon: 'success',
+                                timer: 2000
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: respuesta.mensaje,
+                                icon: 'error'
+                            });
+                        }
+                    }
+                };
+            }
+        });
+    }
 
     const cerrar_planificacion = document.getElementById('cerrar_planificacion');    
     if(cerrar_planificacion){
