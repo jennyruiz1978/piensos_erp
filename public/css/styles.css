@@ -1131,18 +1131,18 @@ span.etiqueta_email {
 #btn_confirmar_accion{
     border: none;
     border-radius: 45%;
-    margin-top: 0.5rem;
+    margin-top: 0rem;
 }
-
+/*
 #comentario_planificacion{
-    width: 45.5rem;
-    margin-right: 1rem;
+    width: 100%;
+    height: 80px;
 }
 
 #btnlisto{
     display: flex;
     align-items: center;
-}
+*/
 
 /*flechas laterales*/
 .absolute {

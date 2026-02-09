@@ -54,18 +54,18 @@
 
                                 </div>
 
-                                <div class="row pl-3 pr-3 mb-4 flex items-center">
-                                    <div class="flex-grow mr-2">
+                                <div class="row mb-4 items-center">
+                                    <div class="col-10 col-xl-11">
                                         <label for="comentario_planificacion" class="form-label" style="font-weight: 700;">Comentaris</label>
                                         <textarea 
                                             name="comentario_planificacion" 
                                             id="comentario_planificacion" 
-                                            class="form-control w-full" 
+                                            class="form-control" 
                                             rows="2" 
                                             placeholder="Escriu un comentari..."><?php echo $datos['detalles']->comentario ?? ''; ?></textarea>
                                     </div>
 
-                                    <div class="flex-none mt-4" id="btnlisto">
+                                    <div class="col-2 col-xl-1 d-flex align-items-end justify-content-center" id="btnlisto">
                                         <button type="button" id="btn_confirmar_accion" class="hover:scale-105 transition-transform">
                                             <img src="<?php echo RUTA_URL;?>/public/img/comprobado.png" alt="Confirmar" style="width: 45px; height: 45px;">
                                         </button>
