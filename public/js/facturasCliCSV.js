@@ -125,110 +125,132 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- EVENTO PARA EXPORTAR CSV ---
-    let formulario_exportar_csv = document.getElementById('formulario_crear_factura_masiva');
-    if(formulario_exportar_csv){
-        formulario_exportar_csv.addEventListener('submit', function(e) {        
-            e.preventDefault();
-            Swal.fire({
-                title: 'Confirmació',
-                text: 'Esteu segur(a) de marcar les factures seleccionades com exportades?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, exportar',
-                cancelButtonText: 'Cancel·lar'
-            }).then((result) => {
-                if(result.isConfirmed){
-                    
-                    let loader = document.getElementById('loader_factura');
-                    if(loader) loader.style.display = 'block';
+    // --- EXPORTAR CSV Y XML (eventos separados) ---
+        // --- Botones de exportación ---
+    const btnCSV = document.getElementById('exportarCSVBtn');
+    const btnXML = document.getElementById('exportarXMLBtn');
+    const formularioExportar = document.getElementById('formulario_crear_factura_masiva');
 
-                    let buttons = formulario_exportar_csv.querySelectorAll('button');
-                    buttons.forEach(btn => btn.disabled = true);
-                    let anclas = formulario_exportar_csv.querySelectorAll('a');
-                    anclas.forEach(an => an.disabled = true);
+    if (!formularioExportar) {
+        console.error('No se encontró el formulario');
+    } else {
+        if (btnCSV) {
+            btnCSV.addEventListener('click', function() {
+                console.log('Click en CSV');
+                exportar('csv');
+            });
+        }
+        if (btnXML) {
+            btnXML.addEventListener('click', function() {
+                console.log('Click en XML');
+                exportar('xml');
+            });
+        }
+    }
 
-                    let ruta = urlCompleta + '/FacturasFicherosCSV/exportarCSV';
-                    let datosForm = new FormData(formulario_exportar_csv);                  
-                    let request = new DB(ruta, 'POST').post(datosForm);
-            
-                    request.then((respuesta => {        
-                        if(loader) loader.style.display = 'none';
-                        buttons.forEach(btn => btn.disabled = false);
-                        anclas.forEach(an => an.disabled = false);
+    function exportar(formato) {
+        let ruta = urlCompleta + '/FacturasFicherosCSV/exportar' + (formato === 'csv' ? 'CSV' : 'XML');
+        console.log('Ruta:', ruta);
 
-                        if(respuesta.error == false){
-                            // --- DESCARGA DEL ARCHIVO ---
-                            if(respuesta.csvData) {
-                                const blob = new Blob([respuesta.csvData], { type: 'text/csv;charset=utf-8;' });
-                                const link = document.createElement("a");
+        // Obtener los IDs de las facturas seleccionadas en la tabla derecha
+        const filas = document.querySelectorAll("#tablaGrillaFactura tbody .fila_alb_inv");
+        const ids = Array.from(filas).map(f => f.getAttribute('data-idfactura'));
+        
+        if (ids.length === 0) {
+            Swal.fire('Atenció', 'No hi ha factures seleccionades', 'warning');
+            return;
+        }
+
+        // Construir FormData
+        const datosForm = new FormData();
+        ids.forEach(id => datosForm.append('idfacturaSelected[]', id));
+
+        Swal.fire({
+            title: 'Confirmació',
+            text: 'Esteu segur(a) de marcar les factures seleccionades com exportades?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, exportar',
+            cancelButtonText: 'Cancel·lar'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            const loader = document.getElementById('loader_factura');
+            if (loader) loader.style.display = 'block';
+
+            const buttons = formularioExportar.querySelectorAll('button');
+            buttons.forEach(btn => btn.disabled = true);
+            const anclas = formularioExportar.querySelectorAll('a');
+            anclas.forEach(an => an.disabled = true);
+
+            fetch(ruta, {
+                method: 'POST',
+                body: datosForm
+            })
+            .then(response => response.json())
+            .then(respuesta => {
+                if (loader) loader.style.display = 'none';
+                buttons.forEach(btn => btn.disabled = false);
+                anclas.forEach(an => an.disabled = false);
+
+                if (respuesta.error === false) {
+                    // 📌 CSV (un solo archivo)
+                    if (formato === 'csv') {
+                        const blob = new Blob([respuesta.contenido], { type: respuesta.tipo_mime });
+                        const link = document.createElement('a');
+                        const url = URL.createObjectURL(blob);
+                        link.href = url;
+                        link.download = respuesta.filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    } 
+                    // 📌 XML (múltiples archivos)
+                    else if (formato === 'xml' && respuesta.multifile) {
+                        respuesta.archivos.forEach((archivo, index) => {
+                            // Pequeño retraso para evitar que el navegador bloquee múltiples descargas
+                            setTimeout(() => {
+                                const blob = new Blob([archivo.contenido], { type: 'application/xml' });
+                                const link = document.createElement('a');
                                 const url = URL.createObjectURL(blob);
-                                link.setAttribute("href", url);
-                                link.setAttribute("download", respuesta.filename || 'export.csv');
-                                link.style.visibility = 'hidden';
+                                link.href = url;
+                                link.download = archivo.filename;
                                 document.body.appendChild(link);
                                 link.click();
                                 document.body.removeChild(link);
-                            }
+                                URL.revokeObjectURL(url);
+                            }, index * 200);
+                        });
+                    }
 
-                            Swal.fire({
-                                title: 'Procés correcte',
-                                text: respuesta.mensaje,
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then((result) => {
-                                const tablaSeleccionados = document.querySelector("#tablaGrillaFactura tbody");
-                                if (tablaSeleccionados) {
-                                    tablaSeleccionados.innerHTML = "";
-                                }
-                                const btnBuscar = document.getElementById('buscarfacturaCli');
-                                if (btnBuscar) {
-                                    btnBuscar.click(); 
-                                }
-                            });
-                        } else // --- MANEJO DE ERRORES (VALIDACIÓN O GENERAL) ---
-                            if (respuesta.tipo === 'VALIDACION_DATOS') {
-                                let htmlErrores = '<div style="text-align: left; font-size: 0.9em; max-height: 400px; overflow-y: auto;">';
-                                
-                                respuesta.detalles.forEach(err => {
-                                    htmlErrores += `<div style="margin-bottom: 12px; border-bottom: 1px solid #eee; pb-2;">`;
-                                    
-                                    // 1. Mostrar campos de cabecera si faltan
-                                    let txtCabecera = "";
-                                    if (err.campos && err.campos.length > 0) {
-                                        txtCabecera = `falta ${err.campos.join(', ')}.`;
-                                    }
-
-                                    htmlErrores += `<p style="margin-bottom: 4px;"><b>Factura ${err.numero}:</b> ${txtCabecera}</p>`;
-
-                                    // 2. Mostrar error de detalle (Si no hay líneas o faltan campos en ellas)
-                                    if (err.errorDetalle) {
-                                        htmlErrores += `<p style="margin-top: 0; color: #d33; font-style: italic;">${err.errorDetalle}</p>`;
-                                    }
-
-                                    htmlErrores += `</div>`;
-                                });
-                                
-                                htmlErrores += '</div>';
-
-                                Swal.fire({
-                                    title: 'Dades incompletes',
-                                    html: htmlErrores,
-                                    icon: 'error',
-                                    confirmButtonText: 'Tornar i corregir',
-                                    customClass: {
-                                        container: 'my-swal-container'
-                                    }
-                                });
-                            } else {
-                                Swal.fire({ 
-                                    title: 'Error', 
-                                    text: respuesta.mensaje, 
-                                    icon: 'error' 
-                                });
-                            }             
-                    }))
+                    Swal.fire('Procés correcte', respuesta.mensaje, 'success').then(() => {
+                        document.querySelector("#tablaGrillaFactura tbody").innerHTML = '';
+                        const btnBuscar = document.getElementById('buscarfacturaCli');
+                        if (btnBuscar) btnBuscar.click();
+                    });
+                } 
+                else if (respuesta.tipo === 'VALIDACION_DATOS') {
+                    let htmlErrores = '<div style="text-align: left;">';
+                    respuesta.detalles.forEach(err => {
+                        let txt = `<b>Factura ${err.numero}:</b>`;
+                        if (err.campos && err.campos.length) txt += ` falten ${err.campos.join(', ')}.`;
+                        if (err.errorDetalle) txt += `<br><i>${err.errorDetalle}</i>`;
+                        htmlErrores += `<div style="margin-bottom: 8px;">${txt}</div>`;
+                    });
+                    htmlErrores += '</div>';
+                    Swal.fire('Dades incompletes', htmlErrores, 'error');
+                } 
+                else {
+                    Swal.fire('Error', respuesta.mensaje, 'error');
                 }
+            })
+            .catch(error => {
+                console.error('Error en fetch:', error);
+                if (loader) loader.style.display = 'none';
+                buttons.forEach(btn => btn.disabled = false);
+                anclas.forEach(an => an.disabled = false);
+                Swal.fire('Error', 'Error de comunicació amb el servidor', 'error');
             });
         });
     }

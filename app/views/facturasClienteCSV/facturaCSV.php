@@ -135,7 +135,8 @@
                                 
                                 <div class="cont_button_product">                                 
                                     <a class="button_update btn_form_crear" href="<?php echo RUTA_URL.'/FacturasClientes';?>">Tancar</a>
-                                    <button type="submit" class="button_submit">Exportar CSV</button>
+                                    <button type="button" class="button_submit" id="exportarCSVBtn">Exportar CSV</button>
+                                    <button type="button" class="button_submit" id="exportarXMLBtn">Exportar XML</button>                                   
                                 </div>
                                 
                             </form>
