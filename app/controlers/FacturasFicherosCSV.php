@@ -3,7 +3,7 @@ error_reporting(0);
 
 class FacturasFicherosCSV extends Controlador {
 
-    const MAX_FACTURAS_EXPORTAR = 10;
+    const MAX_FACTURAS_EXPORTAR = 30;
 
     private $baseImponible;    
     private $ivaTotal;
@@ -504,7 +504,7 @@ class FacturasFicherosCSV extends Controlador {
         $taxIdSeller = $doc->createElement('TaxIdentification');
         $taxIdSeller->appendChild($doc->createElement('PersonTypeCode', 'J'));
         $taxIdSeller->appendChild($doc->createElement('ResidenceTypeCode', 'R'));
-        $taxIdSeller->appendChild($doc->createElement('TaxIdentificationNumber', $factura->cifpiensos));
+        $taxIdSeller->appendChild($doc->createElement('TaxIdentificationNumber', $this->formatearNIFconES($factura->cifpiensos)));  // se esta factorizando el formateo en "formatearNIFconES"
         $sellerParty->appendChild($taxIdSeller);
         
         // LegalEntity
@@ -547,6 +547,17 @@ class FacturasFicherosCSV extends Controlador {
         $parties->appendChild($buyerParty);
         
         return $parties;
+    }
+
+    private function formatearNIFconES($nif)
+    {
+        if (empty($nif)) {
+            return '';
+        }
+        // Elimina todo lo que no sea letra o número
+        $limpio = preg_replace('/[^A-Za-z0-9]/', '', $nif);
+        // Antepone "ES" (si no lo tuviera ya)
+        return 'ES' . $limpio;
     }
 
     private function crearInvoice($doc, $factura)
